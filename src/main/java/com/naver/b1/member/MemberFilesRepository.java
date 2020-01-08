@@ -10,6 +10,6 @@ public interface MemberFilesRepository extends JpaRepository<MemberFilesVO, Inte
 	//MemberFilesVO findById(String id);
 	//MemberFilesVO findByOname(String oname);
 	
-	public List<MemberFilesVO> findById(String id) throws Exception; //매개변수의 변수명은 상관없다.
+	//public List<MemberFilesVO> findById(String id) throws Exception; //매개변수의 변수명은 상관없다.
 	
 }

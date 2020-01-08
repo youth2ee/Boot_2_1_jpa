@@ -15,7 +15,7 @@ class MemberFilesRepositoryTest {
 	@Autowired
 	private MemberFilesRepository memberFilesRepository;
 	
-	@Test
+	//@Test
 	void test() throws Exception {
 		
 		/*
@@ -72,9 +72,14 @@ class MemberFilesRepositoryTest {
 		 */
 		
 		
-		
-		
-		
+	}
+	
+	@Test
+	void selectTest() {
+		 MemberFilesVO memberFilesVO = memberFilesRepository.findById(2).get();
+		System.out.println(memberFilesVO.getFname());
+		System.out.println(memberFilesVO.getOname());
+		System.out.println(memberFilesVO.getMembersVO().getId());
 		
 	}
 

@@ -1,5 +1,6 @@
 package com.naver.b1.member;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,7 +30,8 @@ public class MembersVO { //클래스명과 테이블명을 동일하게 일치�
 	private String name;
 	private String email;
 	
-	@OneToOne(mappedBy = "membersVO") //앞이 해당 클래스 TO 뒤에 다른 클래스 //mappedBy = "join하는 entity에 선언된  자기자신의 Entity변수명"
+	//앞이 해당 클래스 TO 뒤에 다른 클래스 //mappedBy = "join하는 entity에 선언된  자기자신의 Entity변수명"
+	@OneToOne(mappedBy = "membersVO", cascade = CascadeType.ALL) 
 	private MemberFilesVO memberFilesVO;
 
 }

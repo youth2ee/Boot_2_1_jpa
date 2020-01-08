@@ -15,6 +15,9 @@ class MembersRepositoryTest {
 	@Autowired
 	private MembersRepository memberRepository;
 	
+	@Autowired
+	private MemberFilesRepository memberFilesRepository;
+	
 	//@Test
 	void test() throws Exception {
 		//Long count = memberRepository.count();
@@ -62,7 +65,7 @@ class MembersRepositoryTest {
 	
 	
 	
-	@Test
+	//@Test
 	public void selectTest() {
 		Optional<MembersVO> opt = memberRepository.findById("iu4");
 		MembersVO membersVO = opt.get();
@@ -72,4 +75,32 @@ class MembersRepositoryTest {
 	}
 	
 
+	//@Test
+	public void InsertTest() {
+		MembersVO membersVO = new MembersVO();
+		membersVO.setId("iu12");
+		membersVO.setPw("iu12");
+		membersVO.setName("iu12");
+		membersVO.setEmail("iu12@iu12");
+
+		
+		MemberFilesVO memberFilesVO = new MemberFilesVO();
+		memberFilesVO.setMembersVO(membersVO);
+		memberFilesVO.setFname("iu12Fname.jpg");
+		memberFilesVO.setOname("iu12Oname.jpg");
+		
+		membersVO.setMemberFilesVO(memberFilesVO);
+		memberRepository.save(membersVO);
+		
+		//memberFilesVO.setMembersVO(membersVO);
+		//memberFilesRepository.save(memberFilesVO);
+	}
+	
+	@Test
+	void deleteTest() {
+		memberRepository.deleteById("han");
+	}
+	
+	
+	
 }

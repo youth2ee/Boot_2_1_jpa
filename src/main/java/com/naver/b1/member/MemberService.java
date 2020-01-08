@@ -35,35 +35,64 @@ public class MemberService {
 	@Autowired
 	private FileSaver fileSaver;
 	
+	//
 	
-	public List<MembersVO> memberLogin(MembersVO membersVO) throws Exception{
-		  return membersRepository.findByIdAndPw(membersVO.getId(), membersVO.getPw());
-	}
+
+	///
 	
-	public List<MemberFilesVO> memberFilelogin(MembersVO membersVO) throws Exception {
-		return memberFilesRepository.findById(membersVO.getId());
-	}
+	
+	  public List<MembersVO> memberLogin(MembersVO membersVO) throws Exception{
+	  return membersRepository.findByIdAndPw(membersVO.getId(), membersVO.getPw());
+	  }
+	 
+	
 	
 //
-	public Boolean idCheck(MembersVO membersVO) throws Exception {
-		return membersRepository.existsById(membersVO.getId());
-	}
+	/*
+	 * public Boolean idCheck(MembersVO membersVO) throws Exception { return
+	 * membersRepository.existsById(membersVO.getId()); }
+	 */
 	
-	public Boolean memberJoin(MembersVO membersVO, MultipartFile files) throws Exception{
-		membersVO = membersRepository.save(membersVO);
+	
+	/*
+	 * public Boolean memberJoin(MembersVO membersVO, MultipartFile files) throws
+	 * Exception{ membersVO = membersRepository.save(membersVO);
+	 * 
+	 * if(membersRepository.existsById(membersVO.getId())) { File file =
+	 * filePathGenerator.getUseClassPathResource("upload"); String filename =
+	 * fileSaver.save(file, files);
+	 * 
+	 * MemberFilesVO memberFilesVO = new MemberFilesVO();
+	 * //memberFilesVO.setId(membersVO.getId()); memberFilesVO.setFname(filename);
+	 * memberFilesVO.setOname(files.getOriginalFilename());
+	 * 
+	 * memberFilesVO = memberFilesRepository.save(memberFilesVO);
+	 * 
+	 * return true; //memberFilesRepository.existsById(membersVO.getId());
+	 * 
+	 * } else { return false; } }
+	 */
+	 
+	
+	
+	public Boolean memberJoin(MembersVO membersVO, MultipartFile files) throws Exception {
 		
-		if(membersRepository.existsById(membersVO.getId())) {
-			File file = filePathGenerator.getUseClassPathResource("upload");
-			String filename = fileSaver.save(file, files);
-			
+		
+		if(!membersRepository.existsById(membersVO.getId())) {
+		
 			MemberFilesVO memberFilesVO = new MemberFilesVO();
-			//memberFilesVO.setId(membersVO.getId());
-			memberFilesVO.setFname(filename);
+			
+			File file = filePathGenerator.getUseClassPathResource("upload");
+			String filename =  fileSaver.save(file, files);
+			
+			memberFilesVO.setMembersVO(membersVO);
 			memberFilesVO.setOname(files.getOriginalFilename());
+			memberFilesVO.setFname(filename);
 			
-			memberFilesVO = memberFilesRepository.save(memberFilesVO);
-			
-			return true; //memberFilesRepository.existsById(membersVO.getId());
+			membersVO.setMemberFilesVO(memberFilesVO);
+			membersRepository.save(membersVO);
+		
+			return true;
 			
 		} else {
 			return false;
@@ -71,10 +100,20 @@ public class MemberService {
 		
 	}
 	
-	public MemberFilesVO memberFileSelect (MembersVO membersVO) throws Exception {
-		List<MemberFilesVO> ar = memberFilesRepository.findById(membersVO.getId());
-		return ar.get(0);
-	}
+	
+	
+	
+	
+	
+	/*
+	 * public MemberFilesVO memberFileSelect (MembersVO membersVO) throws Exception{
+	 * List<MemberFilesVO> ar = memberFilesRepository.findById(membersVO.getId());
+	 * 
+	 * mem
+	 * 
+	 * return ar.get(0); }
+	 */
+	 
 	
 	
 	

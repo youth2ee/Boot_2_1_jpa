@@ -78,15 +78,18 @@ public class MemberController {
 	@PostMapping("memberLogin")
 	public ModelAndView memberLogin(MembersVO membersVO, HttpSession session) throws Exception {
 		List<MembersVO> ar = memberService.memberLogin(membersVO);
+		
+		System.out.println(ar.get(0).getMemberFilesVO());
+		
 
 		String msg = "로그인 실패"; 
 		String path = "../";
 		
 		if(ar.size() == 1) {
 			msg = "로그인 성공";
-			List<MemberFilesVO> br = memberService.memberFilelogin(membersVO);
+			//List<MemberFilesVO> br = memberService.memberFilelogin(membersVO);
 			session.setAttribute("member", ar.get(0));
-			session.setAttribute("file", br);
+			session.setAttribute("file", ar.get(0).getMemberFilesVO());
 			
 		}
 		
@@ -121,13 +124,12 @@ public class MemberController {
 		
 		System.out.println(membersVO.getId());
 	
-		if(!memberService.idCheck(membersVO)) {
-			Boolean check = memberService.memberJoin(membersVO, files);	
+		Boolean check = memberService.memberJoin(membersVO, files);	
 			
-			if(check) {
-				msg = "가입성공";				
-			}
+		if(check) {
+			msg = "가입성공";				
 		}
+	
 		
 		
 		ModelAndView mv = new ModelAndView(); 
