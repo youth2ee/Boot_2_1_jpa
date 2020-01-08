@@ -13,9 +13,12 @@
 
 <c:import url="../template/nav.jsp" />
 
-notice list
 
 <div class="container">
+<h1>N o t i c e</h1>
+<hr>
+<h2>L I S T</h2>
+<hr>
 
 		<div>
 			<form action="./noticeList" id="frm">
@@ -56,7 +59,7 @@ notice list
 	</table>
 	
 	
-	<div style="width: 100%; margin: 0 auto; text-align: center; padding-top: 10px;">
+<%-- 	<div style="width: 100%; margin: 0 auto; text-align: center; padding-top: 10px;">
 				<ul class="pagination" style="margin: 0 auto; text-align: center;">
 					
 					<c:if test="${pager.curBlock gt 1}">
@@ -75,7 +78,7 @@ notice list
 					</c:if>
 					
 				</ul>
-			</div>
+			</div> --%>
 
 
 
@@ -88,7 +91,7 @@ notice list
 
 </div>
 
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 	 	var kind = '${pager.kind}';
 		if (kind == '') {
 			kind = "kT";
@@ -100,7 +103,7 @@ notice list
 			$("#curPage").val($(this).attr("id"));
 			$("#frm").submit();
 		});
-	</script>
+	</script> -->
 
 </body>
 </html>

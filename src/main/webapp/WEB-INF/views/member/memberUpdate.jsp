@@ -21,8 +21,8 @@
 <img alt="" src="../upload/${file.fname}" style="width: 500px;">
 </div>
 
-<div style="float: left; margin-left: 30px;"> 
 <form:form action="./memberUpdate" method="post" enctype="multipart/form-data" modelAttribute="membersVO">
+<div style="float: left; margin-left: 30px;"> 
 	<div class="form-group">
       <label for="id">ID:</label>
       <form:input path="id" class="form-control" id="id" readonly="true" />
@@ -57,7 +57,6 @@
       <label for="files">File:</label>
       <input type="file" class="form-control" id="files" name="files">
     </div>
-    
 
 </div>
 

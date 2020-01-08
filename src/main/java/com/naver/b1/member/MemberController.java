@@ -80,19 +80,22 @@ public class MemberController {
 	}
 	
 	@PostMapping("memberUpdate")
-	public ModelAndView memberUpdate(MembersVO membersVO, MultipartFile files, HttpSession session) throws Exception {
-		Boolean check = memberService.memberUpdate(membersVO, files, session);
+	public ModelAndView memberUpdate(@Valid MembersVO membersVO, BindingResult bindingResult, MultipartFile files, HttpSession session) throws Exception {
+		ModelAndView mv = new ModelAndView(); 
 		String msg = "수정 실패"; 
 		String path = "../";
-		
-		if(check) {
-			msg = "수정 성공";
+
+		if(bindingResult.hasErrors()) {
+			mv.setViewName("member/memberUpdate");
+		} else {
+			Boolean check = memberService.memberUpdate(membersVO, files, session);
+			if(check) {
+				msg = "수정 성공";
+			}
+			mv.setViewName("common/result");
+			mv.addObject("msg", msg);
+			mv.addObject("path", path);			
 		}
-		ModelAndView mv = new ModelAndView(); 
-		mv.setViewName("common/result");
-		mv.addObject("msg", msg);
-		mv.addObject("path", path);
-		
 		return mv;
 	}
 
