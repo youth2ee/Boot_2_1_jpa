@@ -15,7 +15,7 @@ class MembersRepositoryTest {
 	@Autowired
 	private MembersRepository memberRepository;
 	
-	@Test
+	//@Test
 	void test() throws Exception {
 		//Long count = memberRepository.count();
 		//System.out.println(count);
@@ -44,22 +44,32 @@ class MembersRepositoryTest {
 		//save는 insert와 update를 모두 이용함. pk가 이미 존재하면 update, 존재하지 않으면 insert
 		//내가 사용하지 않는 컬럼값을 입력하지 않으면 자동으로 null로 입력된다.
 		
-		List<MembersVO> ar =  memberRepository.findByIdAndPw("admin", "admin");
-		for(MembersVO membersVO : ar) {
-			System.out.println(membersVO.getId());
-			System.out.println(membersVO.getPw());
-			System.out.println(membersVO.getName());
-			System.out.println(membersVO.getEmail());
-		}
+		/*
+		 * List<MembersVO> ar = memberRepository.findByIdAndPw("admin", "admin");
+		 * for(MembersVO membersVO : ar) { System.out.println(membersVO.getId());
+		 * System.out.println(membersVO.getPw());
+		 * System.out.println(membersVO.getName());
+		 * System.out.println(membersVO.getEmail()); }
+		 */
 		
 		
 		//
-		MembersVO membersVO = new MembersVO();
-		
-		memberRepository.save(membersVO);
-		
-		
+		/*
+		 * MembersVO membersVO = new MembersVO(); memberRepository.save(membersVO);
+		 */
 		
 	}
+	
+	
+	
+	@Test
+	public void selectTest() {
+		Optional<MembersVO> opt = memberRepository.findById("iu4");
+		MembersVO membersVO = opt.get();
+		System.out.println(membersVO.getName());
+		System.out.println(membersVO.getEmail());
+		System.out.println(membersVO.getMemberFilesVO().getFname());
+	}
+	
 
 }

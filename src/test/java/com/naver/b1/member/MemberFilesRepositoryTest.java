@@ -64,12 +64,16 @@ class MemberFilesRepositoryTest {
 		 * System.out.println(memberFilesVO.getFname());
 		 */
 		
-		List<MemberFilesVO> ar = memberFilesRepository.findById("admin");
+		/*
+		 * List<MemberFilesVO> ar = memberFilesRepository.findById("admin");
+		 * 
+		 * for(MemberFilesVO memberFilesVO : ar) {
+		 * System.out.println(memberFilesVO.getFname()); }
+		 */
 		
-		for(MemberFilesVO memberFilesVO : ar) {
-			System.out.println(memberFilesVO.getId());
-			System.out.println(memberFilesVO.getFname());
-		}
+		
+		
+		
 		
 		
 	}

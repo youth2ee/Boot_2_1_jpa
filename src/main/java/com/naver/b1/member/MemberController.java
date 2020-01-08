@@ -121,19 +121,14 @@ public class MemberController {
 		
 		System.out.println(membersVO.getId());
 	
-		
-		if(memberService.idCheck(membersVO.getId())) {
-			membersVO = memberService.memberJoin(membersVO);
+		if(!memberService.idCheck(membersVO)) {
+			Boolean check = memberService.memberJoin(membersVO, files);	
 			
-			System.out.println(membersVO.getId());
-			
-			msg = "가입성공";	
-			
-			/*
-			 * if(memberService.idCheck(membersVO.getId()) != null) { msg = "가입성공"; }
-			 */
-			
+			if(check) {
+				msg = "가입성공";				
+			}
 		}
+		
 		
 		ModelAndView mv = new ModelAndView(); 
 		mv.setViewName("common/result");
