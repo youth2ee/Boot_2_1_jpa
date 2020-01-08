@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class MemberService {
 	
 	
 	  public List<MembersVO> memberLogin(MembersVO membersVO) throws Exception{
-	  return membersRepository.findByIdAndPw(membersVO.getId(), membersVO.getPw());
+		  return membersRepository.findByIdAndPw(membersVO.getId(), membersVO.getPw());
 	  }
 	 
 	
@@ -73,15 +74,10 @@ public class MemberService {
 	 * } else { return false; } }
 	 */
 	 
-	
-	
 	public Boolean memberJoin(MembersVO membersVO, MultipartFile files) throws Exception {
-		
-		
 		if(!membersRepository.existsById(membersVO.getId())) {
 		
 			MemberFilesVO memberFilesVO = new MemberFilesVO();
-			
 			File file = filePathGenerator.getUseClassPathResource("upload");
 			String filename =  fileSaver.save(file, files);
 			
@@ -101,20 +97,38 @@ public class MemberService {
 	}
 	
 	
+	public Boolean memberUpdate(MembersVO membersVO, MultipartFile files, HttpSession session) throws Exception {
+		 MembersVO omembersVO = (MembersVO)session.getAttribute("member");
+		
+		 if(membersRepository.existsById(membersVO.getId())) {
+			 MemberFilesVO memberFilesVO = new MemberFilesVO();
+			 memberFilesVO.setMembersVO(membersVO);
+			 memberFilesVO.setFnum(omembersVO.getMemberFilesVO().getFnum());
+			 
+			 File file = filePathGenerator.getUseClassPathResource("upload");
+			 String filename =  fileSaver.save(file, files);
+			 		 
+			 memberFilesVO.setOname(files.getOriginalFilename());
+			 memberFilesVO.setFname(filename);
+			 
+			 membersVO.setMemberFilesVO(memberFilesVO);
+			 membersRepository.save(membersVO);
+			 
+			 session.setAttribute("member", membersVO);
+			 session.setAttribute("file", memberFilesVO);
+			 
+			 return true;
+		 } else {
+			 return false;
+		 }
+		
+	}
 	
+	public Boolean idCheck(MembersVO membersVO) {
+		return membersRepository.existsById(membersVO.getId());
+	}
 	
-	
-	
-	/*
-	 * public MemberFilesVO memberFileSelect (MembersVO membersVO) throws Exception{
-	 * List<MemberFilesVO> ar = memberFilesRepository.findById(membersVO.getId());
-	 * 
-	 * mem
-	 * 
-	 * return ar.get(0); }
-	 */
-	 
-	
+
 	
 	
 	

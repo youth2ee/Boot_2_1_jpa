@@ -28,8 +28,7 @@
       <!-- path(memberVO의 변수명) = name -->
       <label for="id">ID:</label>
       <form:input path="id" placeholder="Enter id" class="form-control" id="id" />
-     
-      <div style="height: 20px;"> <form:errors path="id" cssStyle="color:red; " /> </div>
+      <div id="idcheck" style="height: 20px;"> <form:errors path="id" cssStyle="color:red; " /> </div>
     </div>
     
     <div class="form-group">
@@ -37,12 +36,12 @@
       <form:password path="pw" class="form-control" id="pw" placeholder="Enter password" />
       <div style="height: 20px;"> <form:errors path="pw" /> </div>
     </div>
-<%--     
+     
     <div class="form-group">
       <label for="pw">Password:</label>
        <form:password path="pw2" class="form-control" id="pw2" placeholder="Enter password" />
        <div style="height: 20px;"> <form:errors path="pw2" /> </div>
-    </div> --%>
+    </div> 
     
     <div class="form-group">
       <label for="name">Name:</label>
@@ -64,6 +63,35 @@
 		
 	</form:form>
 </div>
+
+<script type="text/javascript">
+$('#id').blur(function(){
+
+	//alert($('#id').val());
+
+	var id = $('#id').val();
+
+	$.ajax({
+		data : {
+			id:id
+			},
+		type : "GET",
+		url : "./idCheck",
+		success : function(data) {
+			data = data.trim();
+			$('#idcheck').html(data);
+			//alert(data);
+			//$('#id').val(""); 창비우기
+		}
+	}); 
+
+	
+	
+});
+
+</script>
+
+
 
 
 </body>

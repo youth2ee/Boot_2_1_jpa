@@ -29,6 +29,7 @@
 
 <hr style="clear: both;">
 
+<a class="btn btn-primary" href="./memberUpdate?id=${member.id}">Update</a>
 
 
 <%-- <a class="btn btn-primary" href="./memberFileDown?fnum=${file.fnum}">File Down</a> --%>

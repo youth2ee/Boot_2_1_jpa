@@ -23,9 +23,10 @@ public class MembersVO { //클래스명과 테이블명을 동일하게 일치�
 	//@Column(name = "pw") //primary key가 아닌 컬럼들은 어노테이션 column을 주고 name을 직접 설정해주면 된다.
 	private String pw;
 	
-	/*
-	 * @Transient private String pw2;
-	 */
+	
+	@Transient 
+	private String pw2;
+	 
 	
 	private String name;
 	private String email;

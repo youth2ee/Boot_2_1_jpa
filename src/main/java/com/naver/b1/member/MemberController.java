@@ -1,6 +1,7 @@
 package com.naver.b1.member;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+//@RestController 이 안의 모든 메서드 들이 responseBody일때 사용
 @RequestMapping("/member/**")
 public class MemberController {
 
@@ -67,7 +71,33 @@ public class MemberController {
 	 * 
 	 * return mv; }
 	 */
-	 
+	
+	@GetMapping("memberUpdate")
+	public void memberUpdate(HttpSession session, Model model) {
+		MembersVO membersVO = (MembersVO)session.getAttribute("member");
+		model.addAttribute("membersVO", membersVO);	
+	}
+	
+	@PostMapping("memberUpdate")
+	public ModelAndView memberUpdate(MembersVO membersVO, MultipartFile files, HttpSession session) throws Exception {
+		Boolean check = memberService.memberUpdate(membersVO, files, session);
+		String msg = "수정 실패"; 
+		String path = "../";
+		
+		if(check) {
+			msg = "수정 성공";
+		}
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("common/result");
+		mv.addObject("msg", msg);
+		mv.addObject("path", path);
+		
+		return mv;
+		
+	}
+	
+	
 
 	@GetMapping("memberLogin")
 	public String memberLogin() {
@@ -79,15 +109,12 @@ public class MemberController {
 	public ModelAndView memberLogin(MembersVO membersVO, HttpSession session) throws Exception {
 		List<MembersVO> ar = memberService.memberLogin(membersVO);
 		
-		System.out.println(ar.get(0).getMemberFilesVO());
-		
 
 		String msg = "로그인 실패"; 
 		String path = "../";
 		
 		if(ar.size() == 1) {
 			msg = "로그인 성공";
-			//List<MemberFilesVO> br = memberService.memberFilelogin(membersVO);
 			session.setAttribute("member", ar.get(0));
 			session.setAttribute("file", ar.get(0).getMemberFilesVO());
 			
@@ -140,23 +167,16 @@ public class MemberController {
 		return mv;
 	}
 	
+	@GetMapping("idCheck")
+	@ResponseBody
+	public String idCheck(MembersVO membersVO) {
+		 Boolean check = memberService.idCheck(membersVO);
+		 String msg = "가입할 수 있는 ID입니다.";
+		 
+		 if(check) {
+			 msg = "가입할 수 없는 아이디입니다.";
+		 }
 	
-
-	/*
-	 * @GetMapping("memberFileDown") public ModelAndView
-	 * memberFileDown(MemberFilesVO memberFilesVO) throws Exception { ModelAndView
-	 * mv = new ModelAndView(); memberFilesVO =
-	 * memberService.memberFilesSelect(memberFilesVO);
-	 * 
-	 * if(memberFilesVO != null) { mv.addObject("memberFiles", memberFilesVO);
-	 * mv.addObject("path", "upload");
-	 * 
-	 * //중요 : 객체이름을 지정하지 않으면 그 클래스명의 첫글자를 소문자로 만든것이 객체이름이 된다.
-	 * mv.setViewName("fileDown");
-	 * 
-	 * } else { mv.addObject("msg", "사진이 없습니다."); mv.addObject("path",
-	 * "./memberPage"); mv.setViewName("common/result"); }
-	 * 
-	 * return mv; }
-	 */
+		 return msg;
+	}
 }

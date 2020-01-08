@@ -96,11 +96,30 @@ class MembersRepositoryTest {
 		//memberFilesRepository.save(memberFilesVO);
 	}
 	
-	@Test
+	//@Test
 	void deleteTest() {
 		memberRepository.deleteById("han");
 	}
 	
+	@Test
+	void updateTest() {
+		MembersVO membersVO = new MembersVO();
+		membersVO.setId("cha7");
+		membersVO.setPw("cha7");
+		membersVO.setName("!!!enu!!!");
+		membersVO.setEmail("cha7@cha7");
+		
+		MemberFilesVO memberFilesVO = new MemberFilesVO();
+		memberFilesVO.setFnum(5);
+		memberFilesVO.setFname("9064e15a-ceee-4a1a-887e-095537671221_cha7.gif");
+		memberFilesVO.setOname("cha9.gif");
+		
+		membersVO.setMemberFilesVO(memberFilesVO);
+		memberFilesVO.setMembersVO(membersVO);
+		
+		memberRepository.save(membersVO);
+		
+	}
 	
 	
 }
