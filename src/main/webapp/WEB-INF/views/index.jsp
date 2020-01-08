@@ -17,20 +17,12 @@
 <c:import url="./template/nav.jsp"></c:import>
 
 <div class="container">
-	<form action="./"> 
-		<select name="lang">
-			<option>ko</option>
-			<option>en</option>
-		</select>	
-		<button>change</button>
-	</form>
 
 	<h1> I n d e x </h1>
-
-	<h1> 
-
-
-	</h1>
+	<h1><spring:message code="hello"/></h1>
+		<c:if test="${not empty member}">
+			<h1><spring:message code="login.Message" arguments="${member.id}" /></h1>
+		</c:if>
 
 	<img alt="은우,,," src="./images/cha2.jpg">
 	

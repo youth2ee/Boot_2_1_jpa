@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.naver.b1.member.MemberFilesVO;
@@ -105,13 +106,21 @@ public class MemberService {
 			 memberFilesVO.setMembersVO(membersVO);
 			 memberFilesVO.setFnum(omembersVO.getMemberFilesVO().getFnum());
 			 
-			 File file = filePathGenerator.getUseClassPathResource("upload");
-			 String filename =  fileSaver.save(file, files);
-			 		 
-			 memberFilesVO.setOname(files.getOriginalFilename());
-			 memberFilesVO.setFname(filename);
+				if(files.getSize() > 0) { //수정할 파일이 있을 때
+					 File file = filePathGenerator.getUseClassPathResource("upload");
+					 String filename =  fileSaver.save(file, files);
+					 		 
+					 memberFilesVO.setOname(files.getOriginalFilename());
+					 memberFilesVO.setFname(filename);
+					 
+					 membersVO.setMemberFilesVO(memberFilesVO);
+				} else { //수정할 파일이 없을 때
+					 memberFilesVO.setOname(omembersVO.getMemberFilesVO().getOname());
+					 memberFilesVO.setFname(omembersVO.getMemberFilesVO().getFname());
+					
+					 membersVO.setMemberFilesVO(memberFilesVO);
+				}
 			 
-			 membersVO.setMemberFilesVO(memberFilesVO);
 			 membersRepository.save(membersVO);
 			 
 			 session.setAttribute("member", membersVO);
@@ -121,15 +130,44 @@ public class MemberService {
 		 } else {
 			 return false;
 		 }
-		
 	}
 	
 	public Boolean idCheck(MembersVO membersVO) {
 		return membersRepository.existsById(membersVO.getId());
 	}
 	
+	
+	public Boolean memberDelete(MembersVO membersVO, HttpSession session) {
+		MemberFilesVO memberFilesVO = new MemberFilesVO();
+		memberFilesVO = (MemberFilesVO)session.getAttribute("file");
+		
+		
+		memberFilesRepository.deleteById(memberFilesVO.getFnum());
+		membersRepository.deleteById(membersVO.getId());
+		
+		
+		if(!membersRepository.existsById(membersVO.getId())) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// 회원가입 유효성 검증
+	public boolean memberJoinValidate(MembersVO membersVO, BindingResult bindingResult) throws Exception {
+		boolean check = false; //true라면 에러, false면 검증완료로 지정하겠다.
+		
+		//annotiation으로 검증
+		if (bindingResult.hasErrors()) {
+			check = true;
+		}
 
+		return check;
+	}
 	
-	
+
+	  
+	 
 	
 }
+

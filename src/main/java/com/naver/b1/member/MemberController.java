@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-//@RestController 이 안의 모든 메서드 들이 responseBody일때 사용
+@Controller //@RestController 이 안의 모든 메서드 들이 responseBody일때 사용
 @RequestMapping("/member/**")
+@Transactional
 public class MemberController {
 
 	@Autowired
@@ -87,17 +88,13 @@ public class MemberController {
 		if(check) {
 			msg = "수정 성공";
 		}
-		
 		ModelAndView mv = new ModelAndView(); 
 		mv.setViewName("common/result");
 		mv.addObject("msg", msg);
 		mv.addObject("path", path);
 		
 		return mv;
-		
 	}
-	
-	
 
 	@GetMapping("memberLogin")
 	public String memberLogin() {
@@ -108,8 +105,6 @@ public class MemberController {
 	@PostMapping("memberLogin")
 	public ModelAndView memberLogin(MembersVO membersVO, HttpSession session) throws Exception {
 		List<MembersVO> ar = memberService.memberLogin(membersVO);
-		
-
 		String msg = "로그인 실패"; 
 		String path = "../";
 		
@@ -117,7 +112,6 @@ public class MemberController {
 			msg = "로그인 성공";
 			session.setAttribute("member", ar.get(0));
 			session.setAttribute("file", ar.get(0).getMemberFilesVO());
-			
 		}
 		
 		ModelAndView mv = new ModelAndView(); 
@@ -126,7 +120,6 @@ public class MemberController {
 		mv.addObject("path", path);
 		
 		return mv;
-	
 	}
 
 	@GetMapping("memberPage")
@@ -145,24 +138,23 @@ public class MemberController {
 	}
 	
 	@PostMapping("memberJoin")
-	public ModelAndView memberJoin(MembersVO membersVO, MultipartFile files) throws Exception {
+	public ModelAndView memberJoin(@Valid MembersVO membersVO, BindingResult bindingResult ,MultipartFile files) throws Exception {
+		ModelAndView mv = new ModelAndView(); 
 		String msg = "가입실패";
 		String path = "../";
 		
-		System.out.println(membersVO.getId());
-	
-		Boolean check = memberService.memberJoin(membersVO, files);	
+		if(memberService.memberJoinValidate(membersVO, bindingResult)) {
+			mv.setViewName("member/memberJoin");
+		} else {
+			Boolean check = memberService.memberJoin(membersVO, files);	
 			
-		if(check) {
-			msg = "가입성공";				
+			if(check) {
+				msg = "가입성공";				
+			}
+			mv.setViewName("common/result");
+			mv.addObject("msg", msg);
+			mv.addObject("path", path);
 		}
-	
-		
-		
-		ModelAndView mv = new ModelAndView(); 
-		mv.setViewName("common/result");
-		mv.addObject("msg", msg);
-		mv.addObject("path", path);
 		
 		return mv;
 	}
@@ -178,5 +170,22 @@ public class MemberController {
 		 }
 	
 		 return msg;
+	}
+	
+	@GetMapping("memberDelete")
+	public ModelAndView memberDelete(MembersVO membersVO, HttpSession session) {
+		String msg = "삭제 실패";
+		String path = "../";
+		if(memberService.memberDelete(membersVO, session)) {
+			session.invalidate();
+			msg = "삭제 성공";
+		}
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("common/result");
+		mv.addObject("msg", msg);
+		mv.addObject("path", path);
+		
+		return mv;
 	}
 }
