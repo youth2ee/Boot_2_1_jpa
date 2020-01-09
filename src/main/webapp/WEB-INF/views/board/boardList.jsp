@@ -15,13 +15,10 @@
 
 
 <div class="container">
-<h1>B o a r d</h1>
+<h1>B o a r d : ${board} L I S T</h1>
 <hr>
-<h2>L I S T</h2>
-<hr>
-
 		<div>
-			<form action="./noticeList" id="frm">
+			<form action="./${board}List" id="frm">
 				 <input type="hidden" value="1" name="curPage" id="curPage">
 			
 				<select name="kind">				
@@ -54,9 +51,9 @@
     	<td>${lists.regDate}</td>
     	<td>${lists.hit}</td>
     	<td>
-    		<c:forEach items="${lists.noticeFilesVOs}" var="f">
+    	<%-- 	<c:forEach items="${lists.noticeFilesVOs}" var="f">
     			${f.fname}
-    		</c:forEach>
+    		</c:forEach> --%>
     	</td>
     </tr>
     
@@ -64,13 +61,20 @@
 
 	</table>
 	
+	<!-- <a href="./noticeList?curPage=1">1</a> -->
+	
+	<ul class="pagination" style="margin: 0 auto; text-align: center;">
+	<c:forEach begin="1" end="${totalP-1}" varStatus="status">
+	<li><a href="./${board}List?curPage=${status.index}">${status.index}</a></li>
+	</c:forEach>
+	</ul>
 	
 <%-- 	<div style="width: 100%; margin: 0 auto; text-align: center; padding-top: 10px;">
 				<ul class="pagination" style="margin: 0 auto; text-align: center;">
 					
 					<c:if test="${pager.curBlock gt 1}">
 						<li><span id=${pager.startNum - 1} class="list">이전<a href="./noticeList?curPage=${pager.startNum-1}">[이전]</a></span></li>
-						<a href="./noticeList?curPage=${pager.startNum-1}">[이전]</a>
+						<a href="./${board}List?curPage=${pager.startNum-1}">[이전]</a>
 					</c:if>
 					
 					<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" step="1" var="i">
@@ -80,7 +84,7 @@
 
 					<c:if test="${pager.curBlock lt pager.totalBlock}">
 						<li><span id="${pager.lastNum + 1}" class="list">다음</span></li>
-						<a href="./noticeList?curPage=${pager.lastNum+1}">[다음]</a>
+						<a href="./${board}List?curPage=${pager.lastNum+1}">[다음]</a>
 					</c:if>
 					
 				</ul>
@@ -97,7 +101,7 @@
 
 </div>
 
-<!-- 	<script type="text/javascript">
+	<script type="text/javascript">
 	 	var kind = '${pager.kind}';
 		if (kind == '') {
 			kind = "kT";
@@ -109,7 +113,7 @@
 			$("#curPage").val($(this).attr("id"));
 			$("#frm").submit();
 		});
-	</script> -->
+	</script>
 
 </body>
 </html>

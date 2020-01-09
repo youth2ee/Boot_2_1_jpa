@@ -2,7 +2,9 @@ package com.naver.b1.board.notice;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.naver.b1.board.BoardVO;
 
@@ -15,5 +17,7 @@ public interface NoticeRepository extends JpaRepository<NoticeVO, Integer> {
 	List<NoticeVO> findByNumGreaterThanOrderByNumDesc(int num) throws Exception;
 
 	//List<BoardVO> findByNumGreaterThanOrderByNumDesc(int num) throws Exception;
+	
+	List<NoticeVO> findByNumGreaterThanOrderByNumDesc(int num, Pageable pageable) throws Exception;
 	
 }
