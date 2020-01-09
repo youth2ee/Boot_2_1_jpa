@@ -40,7 +40,7 @@
 		<td>writer</td>
 		<td>date</td>
 		<td>hit</td>
-		<td>file</td>
+<!-- 		<td>file</td> -->
 	</tr>
 	
 	<c:forEach items="${list}" var="lists"> 
@@ -50,11 +50,11 @@
     	<td>${lists.writer}</td>
     	<td>${lists.regDate}</td>
     	<td>${lists.hit}</td>
-    	<td>
-    	<%-- 	<c:forEach items="${lists.noticeFilesVOs}" var="f">
+<%--     	<td>
+    		<c:forEach items="${lists.noticeFilesVOs}" var="f">
     			${f.fname}
-    		</c:forEach> --%>
-    	</td>
+    		</c:forEach>
+    	</td> --%>
     </tr>
     
    </c:forEach>
@@ -64,33 +64,23 @@
 	<!-- <a href="./noticeList?curPage=1">1</a> -->
 	
 	<ul class="pagination" style="margin: 0 auto; text-align: center;">
-	<c:forEach begin="1" end="${totalP-1}" varStatus="status">
-	<li><a href="./${board}List?curPage=${status.index}">${status.index}</a></li>
+	
+	<c:if test="${page.number gt 0}">
+		<li><a href="./${board}List?curPage=${page.number-1}">이전</a></li>
+	</c:if>
+	
+	
+	<c:forEach begin="0" end="${page.totalPages-1}" varStatus="status">
+		<li><a href="./${board}List?curPage=${status.index}">${status.index+1}</a></li>
 	</c:forEach>
+	
+	<c:if test="${page.number lt page.totalPages-1}">
+		<li><a href="./${board}List?curPage=${page.number+1}">다음</a></li>
+	</c:if>
+	
+	
 	</ul>
 	
-<%-- 	<div style="width: 100%; margin: 0 auto; text-align: center; padding-top: 10px;">
-				<ul class="pagination" style="margin: 0 auto; text-align: center;">
-					
-					<c:if test="${pager.curBlock gt 1}">
-						<li><span id=${pager.startNum - 1} class="list">이전<a href="./noticeList?curPage=${pager.startNum-1}">[이전]</a></span></li>
-						<a href="./${board}List?curPage=${pager.startNum-1}">[이전]</a>
-					</c:if>
-					
-					<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" step="1" var="i">
-						<li><span id="${i}" class="list">${i}</span></li>
-						
-					</c:forEach>
-
-					<c:if test="${pager.curBlock lt pager.totalBlock}">
-						<li><span id="${pager.lastNum + 1}" class="list">다음</span></li>
-						<a href="./${board}List?curPage=${pager.lastNum+1}">[다음]</a>
-					</c:if>
-					
-				</ul>
-			</div> --%>
-
-
 
 <%-- 
 <div class="list-group">

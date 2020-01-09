@@ -34,7 +34,6 @@ public class NoticeController {
 	}
 	
 	
-	
 	/* <noticeList> 사용하기
 	 * @GetMapping("noticeList")  
 	 * public void noticeList(Model model) throws Exception { 
@@ -50,25 +49,25 @@ public class NoticeController {
 	  ModelAndView mv = new ModelAndView();
 
 	  if(curPage == null) {
-		  curPage = 1;
+		  curPage = 0;
 	  }
 	  
 	  Page<NoticeVO> ar = noticeService.noticePage(curPage);
 	  List<NoticeVO> br = ar.getContent();
 	  
-	  System.out.println(ar.getNumber());
+	  System.out.println(ar.getNumber()); //현재페이지
 	  System.out.println(ar.getNumberOfElements());
 	  System.out.println(ar.getSize());
 	  
-	  System.out.println(ar.getTotalElements());
-	  System.out.println(ar.getTotalPages());
+	  System.out.println(ar.getTotalElements()); //모든 글의 수
+	  System.out.println(ar.getTotalPages()); //모든 페이지의 수
 	  
 	  System.out.println(ar.getPageable());
 	  System.out.println(ar.getSort());
 	  
 	 // List<NoticeVO> ar = noticeService.noticeList(curPage); 
 	  mv.addObject("list", br);
-	  mv.addObject("totalP", ar.getTotalPages());
+	  mv.addObject("page", ar);
 	  mv.setViewName("board/boardList");
 	  
 	  return mv; 
@@ -95,6 +94,7 @@ public class NoticeController {
 		if(opt.isPresent()) {
 			mv.setViewName("board/boardSelect");
 			mv.addObject("noticeVO", opt.get());
+			
 		} else {
 			mv.setViewName("common/result");
 			mv.addObject("msg", "not found");
@@ -130,6 +130,13 @@ public class NoticeController {
 		mv.addObject("msg",msg);
 		mv.addObject("path",path);	
 		
+		return mv;
+	}
+	
+	@GetMapping("noticeUpdate")
+	public ModelAndView noticeUpdate(NoticeVO noticeVO) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("noticeVO", noticeVO);
 		return mv;
 	}
 	
