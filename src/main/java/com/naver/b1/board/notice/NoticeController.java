@@ -48,7 +48,7 @@ public class NoticeController {
 	  public ModelAndView noticeList(Integer curPage) throws Exception {
 	  ModelAndView mv = new ModelAndView();
 
-	  if(curPage == null) {
+	  if(curPage == null || curPage < 0) {
 		  curPage = 0;
 	  }
 	  
@@ -135,8 +135,22 @@ public class NoticeController {
 	
 	@GetMapping("noticeUpdate")
 	public ModelAndView noticeUpdate(NoticeVO noticeVO) {
+		System.out.println("*****"+noticeVO.getNum());
+		
 		ModelAndView mv = new ModelAndView();
+		Optional<NoticeVO> opt = noticeService.noticeUpdate(noticeVO);
+		
+		System.out.println(opt.get().getTitle());
+		
+		if(opt.isPresent()) {
+			noticeVO = opt.get();
+		} else {
+			noticeVO = new NoticeVO();
+		}
+		
 		mv.addObject("noticeVO", noticeVO);
+		mv.setViewName("board/boardUpdate");
+		
 		return mv;
 	}
 	

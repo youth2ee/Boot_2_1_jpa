@@ -42,6 +42,10 @@
     </c:forEach>
     </div>
 
+<hr>
+
+
+<a href="./${board}Update?num=${noticeVO.num}" class="btn btn-default">Update</a>
 
 </div>
 

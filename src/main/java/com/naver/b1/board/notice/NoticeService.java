@@ -152,7 +152,9 @@ public class NoticeService {
 		return false;
 	}
 	
-	
+	public Optional<NoticeVO> noticeUpdate(NoticeVO noticeVO) {
+		return noticeRepository.findById(noticeVO.getNum());
+	}
 			
 	
 }
