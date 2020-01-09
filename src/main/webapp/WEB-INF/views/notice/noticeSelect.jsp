@@ -37,6 +37,7 @@
     
     <div>
     <c:forEach items="${noticeVO.noticeFilesVOs}" var="file"> 
+   ${file.fname}
 		<img alt="" src="../upload/${file.fname}" style="width: 300px;">
 		<%-- <a class="btn btn-primary" href="./noticeFileDown?fnum=${file.fnum}">File Down</a> --%>
     </c:forEach>
