@@ -45,32 +45,43 @@ public class NoticeController {
 	//<BoardList> 사용하기
 	
 	  @GetMapping("noticeList") 
-	  public ModelAndView noticeList(Integer curPage) throws Exception {
-	  ModelAndView mv = new ModelAndView();
-
-	  if(curPage == null || curPage < 0) {
-		  curPage = 0;
-	  }
-	  
-	  Page<NoticeVO> ar = noticeService.noticePage(curPage);
-	  List<NoticeVO> br = ar.getContent();
-	  
-	  System.out.println(ar.getNumber()); //현재페이지
-	  System.out.println(ar.getNumberOfElements());
-	  System.out.println(ar.getSize());
-	  
-	  System.out.println(ar.getTotalElements()); //모든 글의 수
-	  System.out.println(ar.getTotalPages()); //모든 페이지의 수
-	  
-	  System.out.println(ar.getPageable());
-	  System.out.println(ar.getSort());
-	  
-	 // List<NoticeVO> ar = noticeService.noticeList(curPage); 
-	  mv.addObject("list", br);
-	  mv.addObject("page", ar);
-	  mv.setViewName("board/boardList");
-	  
-	  return mv; 
+	  public ModelAndView noticeList(Integer curPage, String category, String search) throws Exception {
+		  ModelAndView mv = new ModelAndView();
+	
+		  if(curPage == null || curPage < 0) {
+			  curPage = 0;
+		  }
+		  
+		  Page<NoticeVO> ar = null;
+		  List<NoticeVO> br = null;
+		  
+		  if(category == null && search == null) { 
+			  ar = noticeService.noticePage(curPage);
+			  br = ar.getContent();
+			  
+			  System.out.println(ar.getNumber()); //현재페이지
+			  System.out.println(ar.getNumberOfElements());
+			  System.out.println(ar.getSize());
+			  
+			  System.out.println(ar.getTotalElements()); //모든 글의 수
+			  System.out.println(ar.getTotalPages()); //모든 페이지의 수
+			  
+			  System.out.println(ar.getPageable());
+			  System.out.println(ar.getSort());  
+		  } else {
+			  ar = noticeService.noticeSearch(category, search, curPage);			  
+			  if(ar == null) {
+				  ar = noticeService.noticePage(curPage);
+			  }
+			  br = ar.getContent();
+		}
+		  mv.addObject("list", br);
+		  mv.addObject("page", ar);
+		  mv.addObject("category", category);
+		  mv.addObject("search", search);
+		  mv.setViewName("board/boardList");
+		  
+		  return mv; 
 	  }
 	 
 	
