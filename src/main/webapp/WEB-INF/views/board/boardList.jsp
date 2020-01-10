@@ -19,15 +19,15 @@
 <hr>
 		<div>
 			<form action="./${board}List" id="frm">
-				 <input type="hidden" value="1" name="curPage" id="curPage">
+				 <input type="hidden" value="0" name="curPage" id="curPage">
 			
-				<select name="kind">				
-					<option id="kT" value="kT">제목</option>
-					<option id="kW" value="kW">작성자</option>
-					<option id="kC" value="kC">내용</option>
+				<select name="category">				
+					<option id="title" value="title">제목</option>
+					<option id="writer" value="writer">작성자</option>
+					<option id="contents" value="contents">내용</option>
 				</select>
 			
-				<input type="text" name="search" value="${pager.search}">
+				<input type="text" name="search" value="${search}">
 				
 				<button>검색</button>
 			</form>
@@ -69,10 +69,11 @@
 		<li><a href="./${board}List?curPage=${page.number-1}">이전</a></li>
 	</c:if>
 	
-	
+	<c:if test="${page.totalPages != 1}"> 
 	<c:forEach begin="0" end="${page.totalPages-1}" varStatus="status">
 		<li><a href="./${board}List?curPage=${status.index}">${status.index+1}</a></li>
 	</c:forEach>
+	</c:if>
 	
 	<c:if test="${page.number lt page.totalPages-1}">
 		<li><a href="./${board}List?curPage=${page.number+1}">다음</a></li>
@@ -82,22 +83,16 @@
 	</ul>
 	
 
-<%-- 
-<div class="list-group">
-<c:forEach items="${List}" var="list"> 
-  <a href="#" class="list-group-item"> ${list.num} ${list.title} ${list.writer} ${list.regDate} ${list.hit}</a>
-</c:forEach>
-</div> --%>
 
 </div>
 
 	<script type="text/javascript">
-	 	var kind = '${pager.kind}';
-		if (kind == '') {
-			kind = "kT";
+	 	var category = '${category}';
+		if (category == '') {
+			category = "title";
 		}
 		
-		$("#"+kind).prop("selected", true);
+		$("#"+category).prop("selected", true);
 	 
 		$(".list").click(function() {
 			$("#curPage").val($(this).attr("id"));

@@ -50,10 +50,27 @@ public class NoticeService {
 	  
 	  public Page<NoticeVO> noticePage(int curPage) {
 		  Pageable page = PageRequest.of(curPage, 10, Sort.Direction.DESC, "num");
+		  //Sort.by("num").descending().and(Sort.by("title").ascending());
 		  return noticeRepository.findAll(page);
 	  }
 	
 	
+	  public Page<NoticeVO> noticeSearch(String category, String search, int curPage) throws Exception {
+		  Pageable page = PageRequest.of(curPage, 10, Sort.Direction.DESC, "num");
+		  
+		  if(category.equals("title")) {
+			  return noticeRepository.findByTitleContainingAndNumGreaterThan(search, 0, page);
+		  } else if (category.equals("writer")) {
+			  return noticeRepository.findByWriterContainingAndNumGreaterThan(search, 0, page);
+		  } else if (category.equals("contents")) {
+			  return noticeRepository.findByContentsContainingAndNumGreaterThan(search, 0, page);
+		  } else {
+			return null;
+		}
+		  
+		  
+	}
+	  
 	
 	/*
 	 * public List<NoticeVO> noticeList() throws Exception { //return
